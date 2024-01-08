@@ -1,0 +1,14 @@
+
+git clone https://github.com/cmtakara/mern-infrastructure-vite.git sei-cafe
+after you clone:
+cd into the directory
+$ npm i
+$ touch .env
+copy the .env from the mern-infrastructure
+update .gitignore to include .env
+$ npm run build
+$ git remote remove origin
+$ git remote -v
+--- when you are ready to push this to github, you need to create a new repository on github and then use that new_repo_url
+10:33
+then you can open new terminals to run the backend (node server.cjs) and the frontend (npm run dev)

@@ -6,7 +6,7 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 
 // define variables
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3005;
 
 // Connect to the database
 require('./config/database.cjs');
@@ -42,13 +42,25 @@ app.use('/api/users', require('./routes/api/users.cjs'));
 // const userRouter = require('./routes/api/users.cjs')
 // app.use('/api/user', userRouter);
 
+
+
+// Check if token and create req.user
+app.use(require('./config/checkToken.cjs'));
+
+// Put API routes here, before the "catch all" route
+app.use('/api/users', require('./routes/api/users.cjs'));
+// Protect the API routes below from anonymous users
+const ensureLoggedIn = require('./config/ensureLoggedIn.cjs');
+app.use('/api/items', ensureLoggedIn, require('./routes/api/items.cjs'));
+app.use('/api/orders', ensureLoggedIn, require('./routes/api/orders.cjs'));
+
+
 // The following "catch all" route (note the /*) is necessary
 // to return the index.html on all non-AJAX requests
 app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 
 });
-
 
 app.listen(PORT, function () {
     console.log(`Express app running on port: ${PORT}`);
